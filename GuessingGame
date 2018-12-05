@@ -1,0 +1,79 @@
+
+import random
+
+rand_word = ['python', 'developer', 'coding', 'javascript', 'accomplish', 'victorious', 'microsoft']
+
+
+def game():
+    word = random.choice(rand_word)
+    word_index = []
+
+    for i in range(len(word)):
+        j = word[i]
+        word_index.append(str(word.index(j)))
+
+    def game_board(w_i):
+        t_result = ''
+        for k in w_i:
+            if k in word:
+                t_result += k + ' '
+            else:
+                t_result += '_ '
+        return t_result
+
+    def temp_board(board, il=''):
+        if il == '':
+            return game_board(word_index)
+
+        elif il in word:
+            if il in board:
+                print('Letter is already in word.')
+                return game_board(word_index)
+            else:
+                z = word.index(il)
+                for m in range(len(word_index)):
+                    if word_index[m] == str(z):
+                        word_index[m] = il
+                return game_board(word_index)
+
+        else:
+            return game_board(word_index)
+
+    def final_r(r_f):  # return the word w/out spaces
+        f_result = ''
+        r_f = r_f.split(' ')
+        for rf in r_f:
+            if rf in word:
+                f_result += rf
+        return f_result
+
+    def final_result(inp_letter=''):  # use to short the final_r()
+        return final_r(temp_board(game_board(word_index), inp_letter))
+
+    while word != final_result():
+        print('Guess the Word')
+        print('\n' + temp_board(game_board(word_index)).upper())
+        guess = input('\nEnter a letter: ')
+        print('*' * (len(word)*2))
+
+        if len(guess) > 1:
+            temp_board(game_board(word_index), guess)
+            print('Please enter only a letter.')
+        else:
+            if guess in word:
+                temp_board(game_board(word_index), guess)
+            else:
+                temp_board(game_board(word_index), guess)
+                print('Wrong letter.')
+
+    else:
+        print('\nYOU WIN!!!')
+        ans = input('\n\nDo you want to play again YES or NO y/n?: ')
+        if ans == 'Y' or ans == 'y':
+            print('*' * (len(word) * 2))
+            game()
+        else:
+            print('\nThank you for playing GOOD BYE!!!')
+
+
+game()
